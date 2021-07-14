@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>HMM</title>
+      <link href="/2021/07/15/HMM/"/>
+      <url>/2021/07/15/HMM/</url>
+      
+        <content type="html"><![CDATA[<p>Placeholder</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Learning Notes </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> HMM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>GAN &amp; Wasserstein GAN</title>
+      <link href="/2021/07/14/GAN%20&amp;%20Wasserstein%20GAN/"/>
+      <url>/2021/07/14/GAN%20&amp;%20Wasserstein%20GAN/</url>
+      
+        <content type="html"><![CDATA[<ul><li><p>A generator G and a discriminator D</p><ul><li>G’s goal: minimise objective such that $D(G(z))$ is close to 1 (discriminator is fooled into thinking generated $G(z)$ is real)</li><li>D’s goal: maximise objective such that $D(x)$ is close to 1 (real) and $D(G(z))$ is close to 0 (fake)</li><li>G and D are both neural networks, G is differentiable</li><li>Alternate between “Gradient Ascent on D” and “Gradient Descent on G”</li><li>Optimisation target:<br>$$\min <em>{G} \max <em>{D} V(D, G)=\mathbb{E}</em>{\boldsymbol{x} \sim p</em>{\text {data }}(\boldsymbol{x})}[\log D(\boldsymbol{x})]+\mathbb{E}<em>{\boldsymbol{z} \sim p</em>{\boldsymbol{z}}(\boldsymbol{z})}[\log (1-D(G(\boldsymbol{z})))]$$</li><li>The following figure shows the process of optimisation. Actually, we are looking for a map between $z$ and $x$. $z$ could be any distribution, but normally we use normal distribution. The purpose of GAN is to find out a way to transform a distribution from which $z$ is sampled to the target ($p_{data}$). Ideally, at the last step, the distribution of the generated data ($p_g$) is 100% the same as $p_{data}$, D is not able to descriminate the generated data from the real data and hence output 0.5.<br><img src="https://i.imgur.com/zN0wr1r.png" alt="zN0wr1r"></li></ul></li><li><p>Backgroud Knowledge</p><ul><li>KL divergence - to measure the similarity of two distributions. Smaller number means they are closer.<ul><li>discrete<br>$$D_{K L}(P | Q)=\sum_{i} P(i) \log \frac{P(i)}{Q(i)}=\mathbb{E}[\log\frac{P(i)}{Q(i)}]$$</li><li>continuous<br>$$D_{K L}(P | Q)=\int_{-\infty}^{\infty} p(x) \log \frac{p(x)}{q(x)} d x=\mathbb{E}[\log\frac{p(x)}{q(x)}]$$</li><li>Note that they can be expressed as expectations.</li></ul></li><li>JS divergence - another distribution similarity measurement derived from KL divergence.<br>$$D_{JS}(P||Q)=\frac{1}{2} \mathrm{KL}(p | m)+\frac{1}{2} \mathrm{KL}(q | m),\ where\ m(x)=\frac{1}{2}(p(x)+q(x))$$</li></ul></li><li><p>Difficulty of GANs</p><ul><li>The gradient vanishing<ul><li>At the very early phase of training, D is very easy to be confident in detecting G, so D will output almost always 0</li><li>In GAN, better discriminator leads to worse vanishing gradient in its generator</li></ul></li></ul></li><li><p>JS divergence</p><ul><li>$JS(P_r||P_G)=log2$ when two distribution has no overlap</li><li>The probability that the support of $p_{data}$ and $p_g$ have almost zero overlap is 1.<ul><li>support(支撑集) - 函数的非零部分子集，比如ReLu函数的支撑集就是 $(0, +\infty)$，一个概率分布的支撑集就是所有概率密度非零部分的集合</li></ul></li></ul></li><li><p>Wasserstein (Earth-Mover) distance</p><p>  $$W(P_{data}, P_{g})=\inf_{\gamma\sim\Pi(P_{data}, P_{g})} \mathbb{E}_{(x, y)\sim\gamma}[||x-y||]$$</p><ul><li>$\Pi(P_{data},P_g)$ 是$P_{data}$和$P_g$组合起来的所有可能的联合分布的集合，即$\Pi(P_{data},P_g)$中每一个分布的边缘分布都是$P_{data}$和$P_g$</li><li>直观理解$P_{data}$和$P_g$像两堆土，位置不一样，形状不一样， $W(P_{data}, P_{g})$代表把土从$P_{data}$挪到$P_g$所需要的最小消耗</li><li>和KL散度，JS散度相比，优越性在于，即便两个分布没有重叠，Wasserstein distance仍然能够反映它们的远近</li></ul></li><li><p>Loss Function in WGAN</p><ul><li><p>the infimum is highly intractable</p></li><li><p>convert the W-distance to its duality form</p><p>  $$\begin{aligned}W(P_{data}, P_{g})&amp;=\sup_{||f||<em>{L}\le 1}\mathbb{E}</em>{x\sim P_{data}}[f(x)]-\mathbb{E}<em>{x\sim P</em>{g}}[f(x)] \&amp;=\frac{1}{K}\sup_{||f||<em>{L}\le K}\mathbb{E}</em>{x\sim P_{r}}[f(x)]-\mathbb{E}<em>{x\sim P</em>{g}}[f(x)]\end{aligned}$$</p></li><li><p>Lipschitz连续 - 在一个连续函数 $f$ 上面额外施加了一个限制，要求存在一个常数 $K\ge0$ 使得定义域内的任意两个元素 $x_1$ 和 $x_2$ 都满足 $|f(x_{1})-f(x_{2})| \leq K|x_{1}-x_{2}|$, 此时称函数 $f$ 的Lipschitz常数为 $K$. 简单理解，比如说 $f$ 的定义域是实数集合，那上面的要求就等价于 $f$ 的导函数绝对值不超过 $K$。Lipschitz连续条件限制了一个连续函数的最大局部变动幅度。</p></li><li><p>对偶式的意思就是在要求函数 $f$ 的Lipschitz常数 $||f||<em>L$ 不超过 $K$ 的条件下，对所有可能满足条件的 $f$ 取到 $\mathbb{E}</em>{x \sim P_{data}}[f(x)]-\mathbb{E}<em>{x \sim P</em>{g}}[f(x)]$ 的上界，然后再除以 $K$。</p></li><li><p>把函数 $f$ 用一个带参数的神经网络来表示</p><p>  $$W(P_{data}, P_{g})=\max <em>{w \in W} \mathbb{E}</em>{x \sim P_{data}}[f_{w}(x)]-\mathbb{E}<em>{x \sim P</em>{g}}[f_{w}(x)]$$</p></li><li><p>$w$ 还要满足原来的限制 $||f_w||_L\le K$，但我们其实不关心具体的K是多少，它只是会使得梯度变大K倍，并不会影响梯度的方向。此处简化为限制所有的参数 $w$ 不超过某个范围 $[-c,c]$，此时关于输入样本 $x$ 的导数 $\frac{\partial f_w}{\partial x}$ 也不会超过某个范围，所以一定存在某个不知道的常数 $K$ 使得 $f_w$ 的局部变动幅度不会超过它，Lipschitz连续条件得以满足。</p></li><li><p>The loss of discriminator (Remove the last sigmoid layer)</p><p>  $$L_d=\mathbb{E}<em>{x \sim P</em>{data}}[f_{w}(x)]-\mathbb{E}<em>{x \sim P</em>{g}}[f_{w}(x)]$$</p></li><li><p>$f_w$’s goal: maximise Wasserstein distance between real data distribution and generative distribution</p></li><li><p>The Loss of generator</p><p>  $$L_g=-\mathbb{E}<em>{x \sim P</em>{g}}[f_{w}(x)]=-\mathbb{E}<em>{z \sim p(z)}[f</em>{w}(g_{\theta}(z))]$$</p></li><li><p>$g_\theta$’s goal: minimise Wasserstein distance between real data distribution and generative distribution</p></li></ul></li><li><p>Compare to GAN</p><ul><li>Remove the last sigmoid</li><li>no log is applied to the loss</li><li>limit the parameters $w$ within a certain range $[-c,c]$ (weight clipping)</li><li></li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Learning Notes </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GAN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
