@@ -4,25 +4,13 @@
   
     
     <entry>
-      <title>Variational Auto-Encoder</title>
-      <link href="/2021/07/24/VAE/"/>
-      <url>/2021/07/24/VAE/</url>
+      <title>VAE</title>
+      <link href="/2021/07/15/VAE/"/>
+      <url>/2021/07/15/VAE/</url>
       
-        <content type="html"><![CDATA[<p><em>Update Log</em><br>2021-07-24: Initial Upload</p><h2 id="auto-encoder"><a class="markdownIt-Anchor" href="#auto-encoder"></a> Auto-Encoder</h2><ul><li>It is an unsupervised approach for learning a lower-dimensional feature representation from unlabelled training data.<br><img src="https://i.imgur.com/rXY1p2f.png" alt="rXY1p2f"></li><li>The auto-encoder is trained usually with a decoder trying to recover the original data <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>. L2 loss between the reconstructed and original input data is calculated to facilitate the training process.<br><img src="https://i.imgur.com/dhgpw6s.png" alt="dhgpw6s"></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> Learning Notes </category>
-          
-      </categories>
+        <content type="html"><![CDATA[]]></content>
       
       
-        <tags>
-            
-            <tag> VAE </tag>
-            
-        </tags>
       
     </entry>
     
